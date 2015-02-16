@@ -1,6 +1,10 @@
 # spring-boot-integration-rest-server
 Spring Boot REST Server based on Spring Integration HTTP
 
+this is an example repo for a Stackoverflow question:
+
+http://stackoverflow.com/questions/28551093/spring-integration-http-with-spring-boot-and-requestmapping
+
 # For Testing
 ```
 mvn spring-boot:run
