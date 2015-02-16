@@ -1,6 +1,18 @@
 # spring-boot-integration-rest-server
 Spring Boot REST Server based on Spring Integration HTTP
 
+# For Testing
+```
+mvn spring-boot:run
+```
+
+after that, call:
+
+```
+curl -D - "http://127.0.0.1:8002/"
+```
+
+
 # Startup Log
 
 ```

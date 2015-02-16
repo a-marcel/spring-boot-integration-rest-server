@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xmlns:int-http="http://www.springframework.org/schema/integration/http"
+	xmlns:util="http://www.springframework.org/schema/util"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/stream http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd
+		http://www.springframework.org/schema/integration/http http://www.springframework.org/schema/integration/http/spring-integration-http.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		">
+
+	<int:channel id="httpRequestChannel">
+		<int:interceptors>
+			<int:wire-tap channel="logHttpRequestChannel" />
+		</int:interceptors>
+	</int:channel>
+
+	<int:channel id="httpReplyChannel">
+		<int:interceptors>
+			<int:wire-tap channel="logHttpReplyChannel" />
+		</int:interceptors>
+	</int:channel>
+
+	<int:logging-channel-adapter id="logHttpRequestChannel"
+		level="INFO" logger-name="httpRequestChannel" log-full-message="true" />
+
+	<int:logging-channel-adapter id="logHttpReplyChannel"
+		level="INFO" logger-name="httpReplyChannel" log-full-message="true" />
+
+	<int-http:inbound-gateway id="inboundGateway"
+		request-channel="httpRequestChannel" reply-channel="httpReplyChannel"
+		auto-startup="true" supported-methods="GET" path="/">
+		<int-http:request-mapping produces="application/json" />
+	</int-http:inbound-gateway>
+
+	<!-- <bean id="httpInbound" class="org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway"> 
+		<constructor-arg value="true" /> <property name="requestChannel" ref="httpRequestChannel" 
+		/> <property name="replyChannel" ref="httpReplyChannel" /> </bean> -->
+
+
+	<!-- <bean id="httpInbound" class="org.springframework.integration.http.inbound.HttpRequestHandlingController"> 
+		<constructor-arg value="true" /> <property name="requestChannel" ref="httpRequestChannel" 
+		/> <property name="replyChannel" ref="httpReplyChannel" /> </bean> -->
+
+	<!-- <bean id="httpInbound" class="org.springframework.integration.http.inbound.HttpRequestHandlingMessagingGateway"> 
+		<property name="requestChannel" ref="httpRequestChannel" /> <property name="replyChannel" 
+		ref="httpReplyChannel" /> </bean> -->
+
+	<!-- <int-http:inbound-channel-adapter auto-startup="true" channel="httpRequestChannel" 
+		path="/*" id="inboundGateway"> </int-http:inbound-channel-adapter> -->
+
+</beans>
